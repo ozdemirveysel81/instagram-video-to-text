@@ -203,39 +203,39 @@ Kurulumu yap: `bash setup.sh`
 **Chrome ile Mac "anahtar zinciri erişimi" soruyor**  
 Tarayıcı çerezlerini okumak için macOS sana bir izin penceresi gösterebilir. Bu istek senin kendi bilgisayarındaki script'ten geliyorsa izin verebilirsin.
 
-**Safari ile izin hatası**
+**Safari ile izin hatası**  
 Sistem Ayarları > Gizlilik ve Güvenlik > Tam Disk Erişimi bölümünden Terminal'e izin ver, sonra Terminal'i kapatıp yeniden aç.
 
-**`No video formats found`**
+**`No video formats found`**  
 Gönderi sadece fotoğraf içeriyor olabilir; sesi veya videosu olmayan gönderiler indirilemez.
 
-**Whisper çok yavaş**
+**Whisper çok yavaş**  
 `MODEL` değerini `base` veya `tiny` yap. Doğruluk düşer, hız artar.
 
-**Türkçe metinde çok hata var**
+**Türkçe metinde çok hata var**  
 `MODEL="medium"` dene. Arka plan müziği yüksek olan videolarda hata oranı artabilir.
 
-**`permission denied`**
+**`permission denied`**  
 `bash transcribe.sh` şeklinde çalıştır ya da `chmod +x *.sh` komutunu bir kez çalıştır.
 
 ## Sık sorulan sorular
 
-**Verilerim bir yere gönderiliyor mu?**
+**Verilerim bir yere gönderiliyor mu?**  
 Whisper bu kurulumda bilgisayarında yerel olarak çalışır; ses ve metin üçüncü bir servise gönderilmez. Videoyu indirmek için elbette Instagram'a bağlanılır.
 
-**Hesabımın şifresini kullanıyor mu?**
+**Hesabımın şifresini kullanıyor mu?**  
 Hayır. Script şifre istemez. Sadece tarayıcında zaten açık olan oturumun çerezlerini yt-dlp'ye verir.
 
-**Altyazı dosyası (SRT/VTT) alabilir miyim?**
+**Altyazı dosyası (SRT/VTT) alabilir miyim?**  
 Evet. Script'in en üstündeki `FORMATS` ayarına `srt` veya `vtt` yaz. Ayrıntılar için [Çıktı formatları](#çıktı-formatları) bölümüne bak.
 
-**Windows'ta çalışır mı?**
+**Windows'ta çalışır mı?**  
 Bu script'ler bash ve Homebrew için yazıldı. Windows'ta WSL ile çalışabilir ama test edilmedi.
 
-**Metnin doğruluğu nasıl?**
+**Metnin doğruluğu nasıl?**  
 Whisper güçlüdür ama hata yapabilir. Özellikle özel isimlerde, kötü ses kalitesinde ve müzik üzerine konuşmalarda çıkan metni gözden geçirmeni öneririz.
 
-**Aynı linkleri tekrar çalıştırırsam ne olur?**
+**Aynı linkleri tekrar çalıştırırsam ne olur?**  
 Dosya adlarında sıra numarası olduğu için üzerine yazılmaz, ayrı bir kopya oluşabilir. Aynı videoyu iki kez işlememek için `links.txt` içine sadece yeni linkleri yaz.
 
 ## İsteğe bağlı: Claude ile kullanım
