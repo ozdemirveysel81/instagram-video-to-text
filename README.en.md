@@ -187,7 +187,7 @@ File names consist of a running number and the post code. For posts containing s
 
 ## Troubleshooting
 
-**`'yt-dlp' is not installed` / `command not found`**
+**`'yt-dlp' is not installed` / `command not found`**  
 Run the setup: `bash setup.sh`
 
 **Instagram returns "login required", "empty media response" or similar**
@@ -196,45 +196,45 @@ Run the setup: `bash setup.sh`
 - Update yt-dlp: `brew upgrade yt-dlp`. Instagram changes often and old versions may stop working.
 - If you tried many links in a row, wait a while and shorten the list.
 
-**`invalid format`**
+**`invalid format`**  
 In `FORMATS` you can only use: `txt srt vtt tsv json`. Separate several with spaces.
 
-**Chrome: macOS asks for Keychain access**
+**Chrome: macOS asks for Keychain access**  
 To read browser cookies, macOS may show a permission prompt. If the request comes from the script you are running on your own computer, you can allow it.
 
-**Safari: permission error**
+**Safari: permission error**  
 Go to System Settings > Privacy & Security > Full Disk Access, allow Terminal, then quit and reopen Terminal.
 
-**`No video formats found`**
+**`No video formats found`**  
 The post may contain only photos. Posts without video or audio cannot be downloaded.
 
-**Whisper is very slow**
+**Whisper is very slow**  
 Set `MODEL` to `base` or `tiny`. Accuracy drops, speed improves.
 
-**Many mistakes in the transcript**
+**Many mistakes in the transcript**  
 Try `MODEL="medium"`. Videos with loud background music produce more errors.
 
-**`permission denied`**
+**`permission denied`**  
 Run `bash transcribe.sh`, or run `chmod +x *.sh` once.
 
 ## FAQ
 
-**Is my data sent anywhere?**
+**Is my data sent anywhere?**  
 In this setup Whisper runs locally on your computer; audio and text are not sent to a third-party service. Downloading the video naturally connects to Instagram.
 
-**Does it use my account password?**
+**Does it use my account password?**  
 No. The scripts never ask for a password. They only pass the cookies of the session that is already open in your browser to yt-dlp.
 
-**Can I get subtitle files (SRT/VTT)?**
+**Can I get subtitle files (SRT/VTT)?**  
 Yes. Set `FORMATS` at the top of the script to `srt` or `vtt`. See [Output formats](#output-formats).
 
-**Does it work on Windows?**
+**Does it work on Windows?**  
 The scripts are written for bash and Homebrew. They may work under WSL but this has not been tested.
 
-**How accurate is the transcript?**
+**How accurate is the transcript?**  
 Whisper is strong but can make mistakes, especially with proper names, poor audio quality and speech over music. Review the output before relying on it.
 
-**What happens if I run the same links again?**
+**What happens if I run the same links again?**  
 File names contain a running number, so nothing is overwritten; a separate copy may be created. To avoid processing the same video twice, put only new links in `links.txt`.
 
 ## Optional: using it with Claude
