@@ -188,7 +188,9 @@ Dosya adları sıra numarası ve gönderi kodundan oluşur. Birden fazla videosu
 ## Sorun giderme
 
 **`'yt-dlp' is not installed` / `command not found`**
+
 Kurulumu yap: `bash setup.sh`
+
 
 **Instagram "login required", "empty media response" veya benzeri bir hata veriyor**
 - Seçtiğin tarayıcıda Instagram'a giriş yaptığından emin ol.
