@@ -1,0 +1,7 @@
+# Copy this file as links.txt and write your own links:
+#   cp links.example.txt links.txt
+#
+# One Instagram link per line. Lines starting with # are ignored.
+#
+# https://www.instagram.com/p/XXXXXXXXXXX/
+# https://www.instagram.com/reel/YYYYYYYYYYY/
