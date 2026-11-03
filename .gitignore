@@ -1,0 +1,14 @@
+# Personal links (the example file links.example.txt stays in the repo)
+links.txt
+
+# Outputs: downloaded media and generated transcripts
+videos/
+audio/
+transcripts/
+*.mp3
+*.mp4
+*.txt
+!links.example.txt
+
+# macOS
+.DS_Store
