@@ -200,6 +200,7 @@ Kurulumu yap: `bash setup.sh`
 `FORMATS` ayarında sadece şunları kullanabilirsin: `txt srt vtt tsv json`. Birden fazlasını boşlukla ayır.
 
 **Chrome ile Mac "anahtar zinciri erişimi" soruyor**
+
 Tarayıcı çerezlerini okumak için macOS sana bir izin penceresi gösterebilir. Bu istek senin kendi bilgisayarındaki script'ten geliyorsa izin verebilirsin.
 
 **Safari ile izin hatası**
