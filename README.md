@@ -138,6 +138,7 @@ Her script'in en üstündeki `SETTINGS` bölümünü bir metin düzenleyiciyle d
 | `MODEL` | `tiny`, `base`, `small`, `medium` | Büyük model daha doğru ama daha yavaştır. Türkçe için `small` dengeli, `medium` daha doğrudur |
 | `SPOKEN_LANGUAGE` | `Turkish`, `English` vb. | Videodaki konuşma dili |
 | `FORMATS` | `txt`, `srt`, `vtt`, `tsv`, `json` | Çıktı formatları. Boşlukla ayırarak birden fazla yazabilirsin |
+| `COMPATIBLE_MP4` | `yes`, `no` | `transcribe_video.sh` ve `download_video.sh` içinde: `yes` ise her videonun H.264/AAC olduğundan emin olur, değilse otomatik dönüştürür (QuickTime ve iPhone uyumu için). Dönüştürme zaman alabilir ve kaliteyi çok az düşürebilir |
 | `DELETE_AUDIO` | `yes`, `no` | Sadece `transcribe.sh` içinde: işlem sonunda mp3 dosyalarını silsin mi |
 
 Örnek: ses dosyalarını saklamak için `transcribe.sh` içinde şu satırı değiştir:
@@ -187,55 +188,70 @@ Dosya adları sıra numarası ve gönderi kodundan oluşur. Birden fazla videosu
 
 ## Sorun giderme
 
-**`'yt-dlp' is not installed` / `command not found`**  
+**`'yt-dlp' is not installed` / `command not found`**
 Kurulumu yap: `bash setup.sh`
 
-
-**Instagram "login required", "empty media response" veya benzeri bir hata veriyor**  
+**Instagram "login required", "empty media response" veya benzeri bir hata veriyor**
 - Seçtiğin tarayıcıda Instagram'a giriş yaptığından emin ol.
 - `BROWSER` ayarının doğru tarayıcıyı gösterdiğini kontrol et.
 - yt-dlp'yi güncelle: `brew upgrade yt-dlp`. Instagram sık sık değişir ve eski sürümler çalışmayabilir.
 - Çok sayıda linki arka arkaya denediysen bir süre bekle ve listeyi küçült.
 
-**`invalid format`**  
+**`invalid format`**
 `FORMATS` ayarında sadece şunları kullanabilirsin: `txt srt vtt tsv json`. Birden fazlasını boşlukla ayır.
 
-**Chrome ile Mac "anahtar zinciri erişimi" soruyor**  
+**Chrome ile Mac "anahtar zinciri erişimi" soruyor**
 Tarayıcı çerezlerini okumak için macOS sana bir izin penceresi gösterebilir. Bu istek senin kendi bilgisayarındaki script'ten geliyorsa izin verebilirsin.
 
-**Safari ile izin hatası**  
+**Safari ile izin hatası**
 Sistem Ayarları > Gizlilik ve Güvenlik > Tam Disk Erişimi bölümünden Terminal'e izin ver, sonra Terminal'i kapatıp yeniden aç.
 
-**`No video formats found`**  
+**`No video formats found`**
 Gönderi sadece fotoğraf içeriyor olabilir; sesi veya videosu olmayan gönderiler indirilemez.
 
-**Whisper çok yavaş**  
+**İndirilen video açılmıyor, siyah ekran gösteriyor veya sesi yok**
+En olası neden kodektir: Instagram bazı videoları QuickTime'ın ve bazı cihazların açamadığı bir kodekle (örneğin VP9 veya AV1) sunabilir. Script'ler artık H.264 + AAC'yi tercih eder ve farklı kodekte bir video inerse onu otomatik olarak dönüştürür (`COMPATIBLE_MP4="yes"`, varsayılan). Önce projeyi güncelle (`git pull` veya ZIP'i yeniden indir). Sorun sürerse:
+1. Videonun kodeklerine bak:
+   ```bash
+   ffprobe -v error -show_entries stream=codec_type,codec_name,pix_fmt -of default=nw=1 videos/DOSYA_ADI.mp4
+   ```
+   `codec_name=h264`, `pix_fmt=yuv420p` ve sesin `aac` olması beklenir. `vp9`, `av1` veya `yuv420p10le` görürsen kodek sorunudur.
+2. Tek bir dosyayı elle dönüştür:
+   ```bash
+   ffmpeg -i videos/DOSYA_ADI.mp4 -c:v libx264 -pix_fmt yuv420p -c:a aac -movflags +faststart videos/DOSYA_ADI_fixed.mp4
+   ```
+3. Hızlı çözüm olarak videoyu [VLC](https://www.videolan.org/vlc/) veya [IINA](https://iina.io) ile aç. Bunlar çoğu kodeki dönüştürmeden oynatır.
+4. Dosya yarım inmiş olabilir. `videos/` klasöründe `.part` uzantılı veya adında `.f` ve sayı geçen ara dosyalar varsa indirme tamamlanmamıştır. `ffmpeg` eksikse video ve ses ayrı dosyalarda kalır; `bash setup.sh` çalıştırıp linki yeniden dene.
+
+Metne çevirme bu sorundan genellikle etkilenmez, çünkü ffmpeg çoğu kodeki okuyabilir.
+
+**Whisper çok yavaş**
 `MODEL` değerini `base` veya `tiny` yap. Doğruluk düşer, hız artar.
 
-**Türkçe metinde çok hata var**  
+**Türkçe metinde çok hata var**
 `MODEL="medium"` dene. Arka plan müziği yüksek olan videolarda hata oranı artabilir.
 
-**`permission denied`**  
+**`permission denied`**
 `bash transcribe.sh` şeklinde çalıştır ya da `chmod +x *.sh` komutunu bir kez çalıştır.
 
 ## Sık sorulan sorular
 
-**Verilerim bir yere gönderiliyor mu?**  
+**Verilerim bir yere gönderiliyor mu?**
 Whisper bu kurulumda bilgisayarında yerel olarak çalışır; ses ve metin üçüncü bir servise gönderilmez. Videoyu indirmek için elbette Instagram'a bağlanılır.
 
-**Hesabımın şifresini kullanıyor mu?**  
+**Hesabımın şifresini kullanıyor mu?**
 Hayır. Script şifre istemez. Sadece tarayıcında zaten açık olan oturumun çerezlerini yt-dlp'ye verir.
 
-**Altyazı dosyası (SRT/VTT) alabilir miyim?**  
+**Altyazı dosyası (SRT/VTT) alabilir miyim?**
 Evet. Script'in en üstündeki `FORMATS` ayarına `srt` veya `vtt` yaz. Ayrıntılar için [Çıktı formatları](#çıktı-formatları) bölümüne bak.
 
-**Windows'ta çalışır mı?**  
+**Windows'ta çalışır mı?**
 Bu script'ler bash ve Homebrew için yazıldı. Windows'ta WSL ile çalışabilir ama test edilmedi.
 
-**Metnin doğruluğu nasıl?**  
+**Metnin doğruluğu nasıl?**
 Whisper güçlüdür ama hata yapabilir. Özellikle özel isimlerde, kötü ses kalitesinde ve müzik üzerine konuşmalarda çıkan metni gözden geçirmeni öneririz.
 
-**Aynı linkleri tekrar çalıştırırsam ne olur?**  
+**Aynı linkleri tekrar çalıştırırsam ne olur?**
 Dosya adlarında sıra numarası olduğu için üzerine yazılmaz, ayrı bir kopya oluşabilir. Aynı videoyu iki kez işlememek için `links.txt` içine sadece yeni linkleri yaz.
 
 ## İsteğe bağlı: Claude ile kullanım
